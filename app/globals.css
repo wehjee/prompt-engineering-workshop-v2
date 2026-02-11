@@ -1,0 +1,440 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", "Cascadia Code", monospace;
+
+  --color-bg: #fafafa;
+  --color-surface: #ffffff;
+  --color-surface-alt: #f5f5f4;
+  --color-border: #e7e5e4;
+  --color-border-subtle: #f0eeec;
+
+  --color-text: #1c1917;
+  --color-text-secondary: #57534e;
+  --color-text-tertiary: #a8a29e;
+
+  --color-accent: #34D25c;
+  --color-accent-hover: #c4673f;
+  --color-accent-light: #fef3ee;
+
+  --color-success: #16a34a;
+  --color-success-light: #f0fdf4;
+  --color-error: #dc2626;
+  --color-error-light: #fef2f2;
+
+  --color-code-bg: #1e1e2e;
+  --color-playground-bg: #fafaf9;
+}
+
+html {
+  font-family: var(--font-sans);
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background-color: var(--color-accent-light);
+  color: var(--color-accent);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-tertiary);
+}
+
+/* Smooth transitions */
+textarea,
+input,
+button {
+  transition: all 150ms ease;
+}
+
+/* Focus visible for keyboard nav */
+*:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Animate bounce for loading dots */
+@keyframes bounce {
+
+  0%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+
+  40% {
+    transform: translateY(-4px);
+  }
+}
+
+/* ============================================
+   RETRO ARCADE THEME
+   ============================================ */
+
+[data-theme="retro"] {
+  /* Override all design tokens */
+  --color-bg: #0f0f23;
+  --color-surface: #1a1a2e;
+  --color-surface-alt: #16213e;
+  --color-border: #2a2a4a;
+  --color-border-subtle: #1f1f3a;
+
+  --color-text: #e0e0ff;
+  --color-text-secondary: #9898cc;
+  --color-text-tertiary: #5a5a8a;
+
+  --color-accent: #00ff41;
+  --color-accent-hover: #00cc33;
+  --color-accent-light: rgba(0, 255, 65, 0.08);
+
+  --color-success: #00ff41;
+  --color-success-light: rgba(0, 255, 65, 0.08);
+  --color-error: #ff3333;
+  --color-error-light: rgba(255, 51, 51, 0.08);
+
+  --color-code-bg: #0a0a1a;
+  --color-playground-bg: #1a1a2e;
+
+  font-family: "VT323", monospace;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: unset;
+  image-rendering: pixelated;
+}
+
+/* Scanline overlay */
+[data-theme="retro"] body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    transparent, transparent 2px,
+    rgba(0,0,0,0.06) 2px, rgba(0,0,0,0.06) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* CRT vignette */
+[data-theme="retro"] body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.35) 100%);
+  pointer-events: none;
+  z-index: 9998;
+}
+
+/* Retro selection */
+[data-theme="retro"] ::selection {
+  background-color: #00ff41;
+  color: #0f0f23;
+}
+
+/* Retro scrollbar */
+[data-theme="retro"] ::-webkit-scrollbar-thumb {
+  background: #2a2a4a;
+  border-radius: 0;
+}
+
+[data-theme="retro"] ::-webkit-scrollbar-thumb:hover {
+  background: #00ff41;
+}
+
+/* ---- Retro Typography ---- */
+
+[data-theme="retro"] h1,
+[data-theme="retro"] .retro-title {
+  font-family: "Press Start 2P", monospace !important;
+  letter-spacing: 1px;
+  text-shadow: 0 0 10px rgba(0,255,65,0.3);
+}
+
+[data-theme="retro"] h2 {
+  font-family: "Press Start 2P", monospace !important;
+  font-size: 12px !important;
+  color: #00ffff !important;
+  text-shadow: 0 0 8px rgba(0,255,255,0.3);
+  letter-spacing: 1px;
+}
+
+[data-theme="retro"] h3 {
+  font-family: "Press Start 2P", monospace !important;
+  font-size: 10px !important;
+  color: #ff00ff !important;
+  text-shadow: 0 0 6px rgba(255,0,255,0.3);
+}
+
+[data-theme="retro"] p,
+[data-theme="retro"] li,
+[data-theme="retro"] label,
+[data-theme="retro"] span {
+  font-family: "VT323", monospace;
+}
+
+[data-theme="retro"] p {
+  font-size: 20px;
+  line-height: 1.5;
+}
+
+[data-theme="retro"] strong {
+  color: #e0e0ff !important;
+  text-shadow: 0 0 4px rgba(224,224,255,0.2);
+}
+
+[data-theme="retro"] code {
+  font-family: "VT323", monospace !important;
+  background: #0a0a1a;
+  color: #00ff41;
+  border: 1px solid #2a2a4a;
+  border-radius: 0 !important;
+}
+
+/* ---- Retro Borders & Shapes ---- */
+
+[data-theme="retro"] * {
+  border-radius: 0 !important;
+}
+
+[data-theme="retro"] input,
+[data-theme="retro"] textarea {
+  font-family: "VT323", monospace !important;
+  font-size: 18px !important;
+  border-radius: 0 !important;
+  border-width: 2px !important;
+}
+
+[data-theme="retro"] input:focus,
+[data-theme="retro"] textarea:focus {
+  border-color: #00ff41 !important;
+  box-shadow: 0 0 8px rgba(0,255,65,0.15) !important;
+  outline: none !important;
+}
+
+/* ---- Retro Buttons ---- */
+
+[data-theme="retro"] button {
+  font-family: "Press Start 2P", monospace !important;
+  font-size: 9px !important;
+  letter-spacing: 0.5px;
+  border-radius: 0 !important;
+  text-transform: uppercase;
+  position: relative;
+}
+
+[data-theme="retro"] .btn-retro-accent {
+  box-shadow: 3px 3px 0 #00cc33;
+}
+
+[data-theme="retro"] .btn-retro-accent:hover {
+  transform: translate(1px, 1px);
+  box-shadow: 2px 2px 0 #00cc33;
+}
+
+[data-theme="retro"] .btn-retro-accent:active {
+  transform: translate(3px, 3px);
+  box-shadow: none;
+}
+
+/* ---- Retro List Markers ---- */
+
+[data-theme="retro"] ul {
+  list-style: none !important;
+}
+
+[data-theme="retro"] ul li::before {
+  content: "► ";
+  color: #00ff41;
+}
+
+/* ---- Retro Sidebar ---- */
+
+[data-theme="retro"] aside {
+  border-right-width: 4px !important;
+  border-right-color: #00ff41 !important;
+}
+
+/* ---- Retro Part Labels ---- */
+
+[data-theme="retro"] .part-label-retro {
+  font-family: "Press Start 2P", monospace;
+  font-size: 8px;
+  color: #ffcc00;
+  text-shadow: 0 0 8px rgba(255,204,0,0.4);
+  letter-spacing: 2px;
+}
+
+/* ---- Retro Nav Items ---- */
+
+[data-theme="retro"] .nav-item-retro {
+  border-left: 4px solid transparent;
+  font-family: "VT323", monospace;
+  font-size: 18px;
+}
+
+[data-theme="retro"] .nav-item-retro:hover {
+  border-left-color: #00ff41;
+  text-shadow: 0 0 6px rgba(0,255,65,0.5);
+}
+
+[data-theme="retro"] .nav-item-retro.active {
+  border-left-color: #00ff41;
+  text-shadow: 0 0 6px rgba(0,255,65,0.5);
+}
+
+/* ---- Retro Playground ---- */
+
+[data-theme="retro"] .playground-retro {
+  border-color: #00ffff !important;
+  border-width: 3px !important;
+  box-shadow: 0 0 20px rgba(0,255,255,0.08);
+}
+
+/* ---- Retro Exercise ---- */
+
+[data-theme="retro"] .exercise-retro {
+  border-color: #ffcc00 !important;
+  border-width: 3px !important;
+}
+
+/* ---- Retro Chapter Badge ---- */
+
+[data-theme="retro"] .chapter-badge-retro {
+  font-family: "Press Start 2P", monospace;
+  font-size: 8px;
+  color: #0f0f23;
+  background: #ffcc00;
+  box-shadow: 3px 3px 0 rgba(255,204,0,0.3);
+  letter-spacing: 1px;
+}
+
+/* ---- Retro Glow Effects ---- */
+
+[data-theme="retro"] .glow-green {
+  text-shadow: 0 0 10px rgba(0,255,65,0.5), 0 0 20px rgba(0,255,65,0.2);
+}
+
+[data-theme="retro"] .glow-cyan {
+  text-shadow: 0 0 10px rgba(0,255,255,0.5), 0 0 20px rgba(0,255,255,0.2);
+}
+
+/* ---- Retro Blinking Cursor ---- */
+
+@keyframes retro-blink {
+  50% { opacity: 0; }
+}
+
+[data-theme="retro"] .blink-cursor {
+  display: inline-block;
+  width: 10px;
+  height: 18px;
+  background: #00ff41;
+  animation: retro-blink 1s steps(1) infinite;
+  vertical-align: text-bottom;
+  margin-left: 2px;
+}
+
+/* ---- Retro Coin Spin ---- */
+
+@keyframes coin-spin {
+  0% { transform: scaleX(1); }
+  25% { transform: scaleX(0.3); }
+  50% { transform: scaleX(1); }
+  75% { transform: scaleX(0.3); }
+}
+
+[data-theme="retro"] .coin {
+  display: inline-block;
+  animation: coin-spin 1s steps(4) infinite;
+}
+
+/* ---- Retro Pass Result ---- */
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 4px rgba(0,255,65,0.2); }
+  50% { box-shadow: 0 0 12px rgba(0,255,65,0.5); }
+}
+
+[data-theme="retro"] .result-pass-retro {
+  font-family: "Press Start 2P", monospace;
+  font-size: 9px;
+  color: #00ff41;
+  background: rgba(0,255,65,0.1);
+  border: 2px solid #00ff41;
+  text-shadow: 0 0 6px rgba(0,255,65,0.5);
+  animation: pulse-glow 1.5s ease infinite;
+}
+
+/* ---- Theme Toggle ---- */
+
+.theme-toggle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.theme-toggle-track {
+  width: 40px;
+  height: 22px;
+  border-radius: 11px;
+  background: #e7e5e4;
+  position: relative;
+  transition: background 200ms ease;
+}
+
+[data-theme="retro"] .theme-toggle-track {
+  background: #2a2a4a;
+  border-radius: 0 !important;
+  border: 2px solid #00ff41;
+}
+
+.theme-toggle-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  transition: transform 200ms ease;
+}
+
+[data-theme="retro"] .theme-toggle-thumb {
+  border-radius: 0 !important;
+  background: #00ff41;
+  box-shadow: none;
+  width: 14px;
+  height: 14px;
+  top: 2px;
+  left: 2px;
+}
+
+.theme-toggle-track[data-active="true"] .theme-toggle-thumb {
+  transform: translateX(18px);
+}
+
+[data-theme="retro"] .theme-toggle-track[data-active="true"] .theme-toggle-thumb {
+  transform: translateX(20px);
+}

@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pixel Art Tutorial Preview</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f23;
+    --surface: #1a1a2e;
+    --surface-alt: #16213e;
+    --border: #2a2a4a;
+    --text: #e0e0ff;
+    --text-secondary: #9898cc;
+    --text-tertiary: #5a5a8a;
+    --accent: #00ff41;
+    --accent-glow: rgba(0, 255, 65, 0.15);
+    --accent-dim: #00cc33;
+    --yellow: #ffcc00;
+    --cyan: #00ffff;
+    --magenta: #ff00ff;
+    --red: #ff3333;
+    --orange: #ff8800;
+    --code-bg: #0a0a1a;
+    --pixel-border: 4px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html {
+    font-family: 'VT323', monospace;
+    font-size: 18px;
+    background: var(--bg);
+    color: var(--text);
+    image-rendering: pixelated;
+  }
+
+  /* Scanline overlay */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      transparent, transparent 2px,
+      rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px
+    );
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* CRT vignette */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.4) 100%);
+    pointer-events: none;
+    z-index: 9998;
+  }
+
+  .layout {
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ===== SIDEBAR ===== */
+  .sidebar {
+    width: 280px;
+    background: var(--surface);
+    border-right: var(--pixel-border) solid var(--accent);
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    flex-shrink: 0;
+  }
+
+  .sidebar-header {
+    padding: 24px 20px;
+    border-bottom: var(--pixel-border) solid var(--border);
+  }
+
+  .sidebar-header h1 {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    line-height: 1.8;
+    text-shadow: 0 0 10px var(--accent), 0 0 20px rgba(0,255,65,0.3);
+    letter-spacing: 1px;
+  }
+
+  .sidebar-header .subtitle {
+    font-family: 'VT323', monospace;
+    font-size: 16px;
+    color: var(--text-tertiary);
+    margin-top: 8px;
+  }
+
+  .sidebar-nav {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 0;
+  }
+
+  .part-label {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    color: var(--yellow);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 12px 20px 6px;
+    text-shadow: 0 0 8px rgba(255,204,0,0.4);
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    padding: 8px 20px;
+    font-size: 18px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.1s;
+    border-left: 4px solid transparent;
+    text-decoration: none;
+  }
+
+  .nav-item:hover {
+    background: var(--accent-glow);
+    color: var(--accent);
+    border-left-color: var(--accent);
+  }
+
+  .nav-item.active {
+    background: var(--accent-glow);
+    color: var(--accent);
+    border-left-color: var(--accent);
+    text-shadow: 0 0 6px rgba(0,255,65,0.5);
+  }
+
+  .nav-item .num {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    color: var(--text-tertiary);
+    min-width: 20px;
+  }
+
+  .nav-item.active .num {
+    color: var(--accent);
+  }
+
+  .sidebar-footer {
+    padding: 16px 20px;
+    border-top: var(--pixel-border) solid var(--border);
+    font-size: 14px;
+    color: var(--text-tertiary);
+  }
+
+  /* Pixel art coin animation */
+  .coin {
+    display: inline-block;
+    animation: coin-spin 1s steps(4) infinite;
+  }
+  @keyframes coin-spin {
+    0% { transform: scaleX(1); }
+    25% { transform: scaleX(0.3); }
+    50% { transform: scaleX(1); }
+    75% { transform: scaleX(0.3); }
+  }
+
+  /* ===== MAIN CONTENT ===== */
+  .main {
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* API Key Bar */
+  .api-bar {
+    padding: 16px 32px;
+    background: var(--surface-alt);
+    border-bottom: var(--pixel-border) solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .api-bar .label {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    color: var(--yellow);
+    white-space: nowrap;
+  }
+
+  .api-bar input {
+    flex: 1;
+    max-width: 360px;
+    padding: 8px 12px;
+    background: var(--code-bg);
+    border: 2px solid var(--border);
+    color: var(--accent);
+    font-family: 'VT323', monospace;
+    font-size: 18px;
+    outline: none;
+  }
+
+  .api-bar input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 8px var(--accent-glow);
+  }
+
+  .api-bar input::placeholder {
+    color: var(--text-tertiary);
+  }
+
+  .btn {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    padding: 10px 16px;
+    border: none;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    transition: all 0.1s;
+  }
+
+  .btn-accent {
+    background: var(--accent);
+    color: var(--bg);
+    box-shadow: 4px 4px 0 var(--accent-dim);
+  }
+
+  .btn-accent:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--accent-dim);
+  }
+
+  .btn-accent:active {
+    transform: translate(4px, 4px);
+    box-shadow: none;
+  }
+
+  /* Content area */
+  .content {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 48px 40px;
+  }
+
+  .chapter-badge {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    color: var(--bg);
+    background: var(--yellow);
+    display: inline-block;
+    padding: 4px 10px;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+    box-shadow: 3px 3px 0 rgba(255,204,0,0.3);
+  }
+
+  .chapter-title {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 18px;
+    color: var(--text);
+    line-height: 2;
+    margin-bottom: 12px;
+    text-shadow: 3px 3px 0 rgba(0,0,0,0.5);
+  }
+
+  .chapter-desc {
+    font-size: 22px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 40px;
+  }
+
+  h2 {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 12px;
+    color: var(--cyan);
+    margin: 40px 0 16px;
+    text-shadow: 0 0 8px rgba(0,255,255,0.3);
+    letter-spacing: 1px;
+  }
+
+  h3 {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    color: var(--magenta);
+    margin: 28px 0 12px;
+    text-shadow: 0 0 6px rgba(255,0,255,0.3);
+  }
+
+  p {
+    font-size: 22px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+
+  p strong {
+    color: var(--text);
+    text-shadow: 0 0 4px rgba(224,224,255,0.2);
+  }
+
+  code {
+    font-family: 'VT323', monospace;
+    background: var(--code-bg);
+    color: var(--accent);
+    padding: 2px 6px;
+    border: 1px solid var(--border);
+  }
+
+  ul {
+    font-size: 22px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    padding-left: 24px;
+    margin-bottom: 16px;
+  }
+
+  ul li::marker {
+    color: var(--accent);
+    content: '► ';
+  }
+
+  /* ===== CODE BLOCK ===== */
+  .code-block {
+    background: var(--code-bg);
+    border: var(--pixel-border) solid var(--border);
+    margin: 20px 0;
+    position: relative;
+  }
+
+  .code-block-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 16px;
+    border-bottom: 2px solid var(--border);
+    background: rgba(255,255,255,0.02);
+  }
+
+  .code-block-header .lang {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    color: var(--text-tertiary);
+    letter-spacing: 1px;
+  }
+
+  .code-block-header .copy-btn {
+    font-family: 'VT323', monospace;
+    font-size: 16px;
+    color: var(--text-tertiary);
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .code-block-header .copy-btn:hover {
+    color: var(--accent);
+  }
+
+  .code-block pre {
+    padding: 16px;
+    overflow-x: auto;
+    font-size: 17px;
+    line-height: 1.5;
+  }
+
+  .code-block pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: var(--text);
+  }
+
+  .kw { color: var(--magenta); }
+  .str { color: var(--yellow); }
+  .cm { color: var(--text-tertiary); }
+  .fn { color: var(--cyan); }
+
+  /* ===== PLAYGROUND ===== */
+  .playground {
+    background: var(--surface);
+    border: var(--pixel-border) solid var(--cyan);
+    margin: 28px 0;
+    position: relative;
+    box-shadow: 0 0 20px rgba(0,255,255,0.08);
+  }
+
+  .playground-header {
+    padding: 16px 20px 0;
+  }
+
+  .playground-header h3 {
+    margin: 0 0 4px;
+    color: var(--cyan);
+  }
+
+  .playground-header p {
+    font-size: 18px;
+    margin-bottom: 0;
+  }
+
+  .playground-body {
+    padding: 20px;
+  }
+
+  .field-label {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    color: var(--text-tertiary);
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  textarea {
+    width: 100%;
+    padding: 12px;
+    background: var(--code-bg);
+    border: 2px solid var(--border);
+    color: var(--text);
+    font-family: 'VT323', monospace;
+    font-size: 20px;
+    line-height: 1.4;
+    resize: vertical;
+    outline: none;
+    min-height: 100px;
+  }
+
+  textarea:focus {
+    border-color: var(--cyan);
+    box-shadow: 0 0 8px rgba(0,255,255,0.15);
+  }
+
+  .playground-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 12px;
+  }
+
+  .btn-send {
+    background: var(--cyan);
+    color: var(--bg);
+    box-shadow: 4px 4px 0 rgba(0,255,255,0.3);
+  }
+
+  .btn-send:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 rgba(0,255,255,0.3);
+  }
+
+  .shortcut-hint {
+    font-size: 16px;
+    color: var(--text-tertiary);
+  }
+
+  .response-area {
+    margin-top: 16px;
+  }
+
+  .response-box {
+    padding: 16px;
+    background: var(--code-bg);
+    border: 2px solid var(--border);
+    min-height: 60px;
+  }
+
+  .response-text {
+    font-size: 20px;
+    line-height: 1.5;
+    color: var(--text);
+    white-space: pre-wrap;
+  }
+
+  .blink-cursor {
+    display: inline-block;
+    width: 10px;
+    height: 20px;
+    background: var(--accent);
+    animation: blink 1s steps(1) infinite;
+    vertical-align: text-bottom;
+    margin-left: 2px;
+  }
+
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+
+  /* ===== EXERCISE ===== */
+  .exercise {
+    background: var(--surface);
+    border: var(--pixel-border) dashed var(--yellow);
+    margin: 28px 0;
+    position: relative;
+  }
+
+  .exercise-header {
+    padding: 16px 20px 12px;
+    border-bottom: 2px dashed var(--border);
+  }
+
+  .exercise-badge {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    color: var(--bg);
+    background: var(--yellow);
+    display: inline-block;
+    padding: 3px 8px;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+  }
+
+  .exercise-header h3 {
+    margin: 0 0 4px;
+    color: var(--yellow);
+  }
+
+  .exercise-body {
+    padding: 20px;
+  }
+
+  .hint-btn {
+    font-family: 'VT323', monospace;
+    font-size: 18px;
+    color: var(--text-tertiary);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .hint-btn:hover {
+    color: var(--yellow);
+  }
+
+  .hint-box {
+    padding: 12px;
+    background: rgba(255,204,0,0.05);
+    border: 2px solid rgba(255,204,0,0.2);
+    margin-top: 12px;
+  }
+
+  .hint-box .hint-label {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    color: var(--yellow);
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+
+  .hint-box p {
+    font-size: 18px;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  .btn-check {
+    background: var(--yellow);
+    color: var(--bg);
+    box-shadow: 4px 4px 0 rgba(255,204,0,0.3);
+  }
+
+  .btn-check:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 rgba(255,204,0,0.3);
+  }
+
+  .result-pass {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    color: var(--accent);
+    background: rgba(0,255,65,0.1);
+    border: 2px solid var(--accent);
+    padding: 6px 12px;
+    display: inline-block;
+    margin-top: 12px;
+    text-shadow: 0 0 6px rgba(0,255,65,0.5);
+    animation: pulse-glow 1.5s ease infinite;
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 4px rgba(0,255,65,0.2); }
+    50% { box-shadow: 0 0 12px rgba(0,255,65,0.5); }
+  }
+
+  /* ===== FOOTER NAV ===== */
+  .chapter-footer {
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: var(--pixel-border) solid var(--border);
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .chapter-footer a {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    color: var(--text-tertiary);
+    text-decoration: none;
+    letter-spacing: 1px;
+    transition: color 0.1s;
+  }
+
+  .chapter-footer a:hover {
+    color: var(--accent);
+    text-shadow: 0 0 8px rgba(0,255,65,0.3);
+  }
+
+  /* Pixel art decorations */
+  .pixel-star {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: var(--yellow);
+    box-shadow:
+      8px 0 0 var(--yellow),
+      -8px 0 0 var(--yellow),
+      0 8px 0 var(--yellow),
+      0 -8px 0 var(--yellow);
+    animation: twinkle 2s steps(2) infinite;
+  }
+
+  @keyframes twinkle {
+    50% { opacity: 0.4; }
+  }
+
+  /* Health bar style progress indicator */
+  .xp-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+  }
+
+  .xp-label {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    color: var(--text-tertiary);
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+
+  .xp-track {
+    flex: 1;
+    height: 12px;
+    background: var(--code-bg);
+    border: 2px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .xp-fill {
+    height: 100%;
+    background: var(--accent);
+    width: 11%;
+    box-shadow: 0 0 6px rgba(0,255,65,0.4);
+    transition: width 0.3s steps(10);
+  }
+
+  .xp-text {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h1>PROMPT<br>ENGINEERING</h1>
+      <div class="subtitle"><span class="coin">★</span> Interactive Tutorial</div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="part-label">★ BEGINNER</div>
+      <a class="nav-item active" href="#">
+        <span class="num">01</span> Basic Prompt Structure
+      </a>
+      <a class="nav-item" href="#">
+        <span class="num">02</span> Being Clear and Direct
+      </a>
+      <a class="nav-item" href="#">
+        <span class="num">03</span> Assigning Roles
+      </a>
+
+      <div class="part-label">★★ INTERMEDIATE</div>
+      <a class="nav-item" href="#">
+        <span class="num">04</span> Separating Data
+      </a>
+      <a class="nav-item" href="#">
+        <span class="num">05</span> Formatting Output
+      </a>
+      <a class="nav-item" href="#">
+        <span class="num">06</span> Thinking Step by Step
+      </a>
+      <a class="nav-item" href="#">
+        <span class="num">07</span> Using Examples
+      </a>
+
+      <div class="part-label">★★★ ADVANCED</div>
+      <a class="nav-item" href="#">
+        <span class="num">08</span> Avoiding Hallucinations
+      </a>
+      <a class="nav-item" href="#">
+        <span class="num">09</span> Complex Prompts
+      </a>
+    </nav>
+
+    <div class="xp-bar">
+      <span class="xp-label">LVL 1</span>
+      <div class="xp-track"><div class="xp-fill"></div></div>
+      <span class="xp-text">1/9</span>
+    </div>
+
+    <div class="sidebar-footer">
+      Based on Anthropic's official course
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+    <!-- API Key Bar -->
+    <div class="api-bar">
+      <span class="label">INSERT COIN ▶</span>
+      <input type="password" placeholder="sk-ant-api03-..." />
+      <button class="btn btn-accent">SAVE</button>
+    </div>
+
+    <!-- Chapter Content -->
+    <div class="content">
+
+      <div class="chapter-badge">WORLD 1 — BEGINNER</div>
+      <h1 class="chapter-title">Basic Prompt<br>Structure</h1>
+      <p class="chapter-desc">
+        Learn the fundamentals of Claude's Messages API, including message formatting, system prompts, and the temperature parameter.
+      </p>
+
+      <h2>// LESSON</h2>
+      <p>
+        Claude works through the <strong>Messages API</strong>. When calling Claude, there are several required and optional parameters you can set to control the output.
+      </p>
+      <p>The API requires three key parameters:</p>
+      <ul>
+        <li><strong>model</strong> — the model you want to use</li>
+        <li><strong>max_tokens</strong> — the maximum number of tokens to generate</li>
+        <li><strong>messages</strong> — an array of message objects</li>
+      </ul>
+
+      <!-- Code Block -->
+      <div class="code-block">
+        <div class="code-block-header">
+          <span class="lang">TYPESCRIPT</span>
+          <button class="copy-btn">[COPY]</button>
+        </div>
+        <pre><code><span class="kw">const</span> response = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">"/api/chat"</span>, {
+  method: <span class="str">"POST"</span>,
+  body: <span class="fn">JSON.stringify</span>({
+    messages: [{ role: <span class="str">"user"</span>, content: <span class="str">"Hi, Claude!"</span> }],
+  }),
+});</code></pre>
+      </div>
+
+      <p>
+        You can also provide a <strong>system prompt</strong> to give Claude context. The <strong>temperature</strong> parameter controls randomness — we use <code>0</code> for consistent results.
+      </p>
+
+      <!-- Playground -->
+      <div class="playground">
+        <div class="playground-header">
+          <h3>▶ TRY IT YOURSELF</h3>
+          <p>Send a simple message to Claude. Try changing it and see what happens.</p>
+        </div>
+        <div class="playground-body">
+          <span class="field-label">USER MESSAGE</span>
+          <textarea>Hi, Claude!</textarea>
+          <div class="playground-actions">
+            <button class="btn btn-send">SEND TO CLAUDE</button>
+            <span class="shortcut-hint">⌘+Enter</span>
+          </div>
+          <div class="response-area">
+            <span class="field-label">CLAUDE'S RESPONSE</span>
+            <div class="response-box">
+              <span class="response-text">Hello! It's nice to meet you. How can I help you today?<span class="blink-cursor"></span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h2>// EXERCISES</h2>
+
+      <!-- Exercise -->
+      <div class="exercise">
+        <div class="exercise-header">
+          <div class="exercise-badge">CHALLENGE</div>
+          <h3>EXERCISE 1.1 — COUNTING TO THREE</h3>
+          <p>Write a prompt that gets Claude to output exactly the numbers 1, 2, and 3 — in that order.</p>
+        </div>
+        <div class="exercise-body">
+          <span class="field-label">YOUR PROMPT</span>
+          <textarea placeholder="Write your prompt here..."></textarea>
+          <div class="playground-actions">
+            <button class="btn btn-check">CHECK ANSWER</button>
+            <button class="hint-btn">[ ? SHOW HINT ]</button>
+          </div>
+          <div class="hint-box">
+            <div class="hint-label">HINT</div>
+            <p>The grader checks that 1, 2, and 3 appear in order. You can simply ask Claude to count or list the numbers.</p>
+          </div>
+          <div class="result-pass">
+            ★ PASSED! +100 XP ★
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer Nav -->
+      <div class="chapter-footer">
+        <span style="color:var(--text-tertiary)">— START —</span>
+        <a href="#">NEXT LEVEL →→→</a>
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+</html>
