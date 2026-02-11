@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -9,15 +9,35 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const mainRef = useRef<HTMLDivElement>(null);
   const isCoverPage = pathname === "/";
 
+  // On landing page, scroll to the anchor card if hash is present
+  useEffect(() => {
+    if (isCoverPage && window.location.hash) {
+      const id = window.location.hash.slice(1);
+      // Small delay to let the page render
+      setTimeout(() => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.scrollIntoView({ behavior: "instant", block: "center" });
+        }
+      }, 100);
+    }
+  }, [isCoverPage]);
+
   const handleBack = (e: React.MouseEvent) => {
     e.preventDefault();
+    // Extract chapter id from current path (e.g. /chapters/3 -> 3, /headshot -> 10)
+    const chapterMatch = pathname?.match(/\/chapters\/(\d+)/);
+    const anchor = chapterMatch ? `chapter-${chapterMatch[1]}` : pathname === "/headshot" ? "chapter-10" : "";
+
     const el = mainRef.current;
     if (el) {
       el.style.transition = "opacity 300ms ease, transform 300ms ease";
       el.style.opacity = "0";
       el.style.transform = "translateY(8px)";
     }
-    setTimeout(() => router.push("/"), 300);
+    setTimeout(() => {
+      router.push(anchor ? `/#${anchor}` : "/");
+    }, 300);
   };
 
   if (isCoverPage) {

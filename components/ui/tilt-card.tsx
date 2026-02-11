@@ -62,6 +62,7 @@ export function TiltCard({ title, description, chapter, part, href }: TiltCardPr
 
   return (
     <a
+      id={`chapter-${chapter}`}
       ref={cardRef}
       href={href}
       onMouseMove={handleMouseMove}
