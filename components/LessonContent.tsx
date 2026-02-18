@@ -197,7 +197,7 @@ export function LessonContent({ chapter }: { chapter: Chapter }) {
         ) : (
           <div />
         )}
-        {chapter.id < 9 ? (
+        {chapter.id < 8 ? (
           <a
             href={`/chapters/${chapter.id + 1}`}
             className="text-sm text-text-secondary hover:text-accent transition-colors flex items-center gap-1"

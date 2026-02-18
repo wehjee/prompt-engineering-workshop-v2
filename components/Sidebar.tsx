@@ -9,8 +9,8 @@ import { useTheme } from "./ThemeProvider";
 
 const parts = [
   { key: "beginner", label: "Beginner", range: "Chapters 1\u20133" },
-  { key: "intermediate", label: "Intermediate", range: "Chapters 4\u20137" },
-  { key: "advanced", label: "Advanced", range: "Chapters 8\u20139" },
+  { key: "intermediate", label: "Intermediate", range: "Chapters 4\u20136" },
+  { key: "advanced", label: "Advanced", range: "Chapters 7\u20138" },
 ] as const;
 
 export function Sidebar() {

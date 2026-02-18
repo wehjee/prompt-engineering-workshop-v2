@@ -24,7 +24,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const handleBack = (e: React.MouseEvent) => {
     e.preventDefault();
     const chapterMatch = pathname?.match(/\/chapters\/(\d+)/);
-    const anchor = chapterMatch ? `chapter-${chapterMatch[1]}` : pathname === "/headshot" ? "chapter-10" : "";
+    const anchor = chapterMatch ? `chapter-${chapterMatch[1]}` : pathname === "/headshot" ? "chapter-9" : "";
     router.push(anchor ? `/#${anchor}` : "/");
   };
 

@@ -293,115 +293,10 @@ Roles aren\u2019t just for fun personas \u2014 they can genuinely improve reason
   },
 
   // ============================================================
-  // CHAPTER 4: Separating Data from Instructions
+  // CHAPTER 4: Formatting Output & Speaking for AI
   // ============================================================
   {
     id: 4,
-    title: "Separating Data from Instructions",
-    part: "intermediate",
-    partLabel: "Part 2 \u2014 Intermediate",
-    description:
-      "Learn to use XML tags to clearly separate instructions from variable data, creating reusable prompt templates.",
-    sections: [
-      {
-        type: "text",
-        content: `## Lesson
-
-Often, we don\u2019t want to write full prompts every time. Instead, we want **prompt templates** \u2014 fixed instruction skeletons that can be filled in with different data each time.
-
-The key technique: **separate the fixed instructions from the variable user input**, then substitute the input before sending to AI.
-
-This is especially important when the variable content might be confusing or could be misinterpreted as part of the instructions.`,
-      },
-      {
-        type: "text",
-        content: `### The problem
-
-Without clear boundaries, AI can get confused about where instructions end and input data begins. Consider this prompt:`,
-      },
-      {
-        type: "playground",
-        title: "Without XML Tags (Confusing)",
-        description:
-          "Notice how AI misinterprets 'Yo AI' as part of the email to rewrite.",
-        defaultUserMessage: `Yo AI. Show up at 6am tomorrow because I'm the CEO and I say so. <----- Make this email more polite but don't change anything else about it.`,
-      },
-      {
-        type: "text",
-        content: `### The solution: XML tags
-
-**XML tags** like \`<tag></tag>\` are the ideal way to mark where input data begins and ends. AI was specifically trained to recognize XML tags as a prompt-organizing mechanism.
-
-Wrap your variable content in descriptive XML tags:`,
-      },
-      {
-        type: "playground",
-        title: "With XML Tags (Clear)",
-        description:
-          "Now AI correctly identifies the email content and rewrites only that portion.",
-        defaultUserMessage: `Yo AI. <email>Show up at 6am tomorrow because I'm the CEO and I say so.</email> Make this email more polite but don't change anything else about it.`,
-      },
-      {
-        type: "text",
-        content: `### Another example
-
-XML tags also prevent AI from misinterpreting formatted input as part of the instructions. Below, without tags, AI incorrectly treats an instruction line as part of the list:`,
-      },
-      {
-        type: "playground",
-        title: "List Confusion Without Tags",
-        description: "Try this, then add XML tags around the sentences to fix it.",
-        defaultUserMessage: `Below is a list of sentences. Tell me the second item on the list.
-
-- Each is about an animal, like rabbits.
-- I like how cows sound
-- This sentence is about spiders
-- This sentence may appear to be about dogs but it's actually about pigs`,
-      },
-      {
-        type: "text",
-        content: `> **Tip:** While AI can work with various separators, we recommend **XML tags specifically** because AI was trained to recognize them as structural markers. There are no special magic tag names \u2014 use whatever names are descriptive for your content (e.g., \`<email>\`, \`<sentences>\`, \`<document>\`).
-
-> **Tip:** Small details matter! Typos, grammar errors, and formatting all influence AI\u2019s responses. It\u2019s always worth scrubbing your prompts.
-
----
-
-## Exercises`,
-      },
-      {
-        type: "exercise",
-        title: "Exercise 4.1 \u2014 Haiku Topic",
-        description:
-          "Write a prompt template that takes a topic and produces a haiku. Your prompt should include the word \u2018haiku\u2019 and reference the topic \u2018Pigs\u2019. AI\u2019s response should contain the word \u2018pig\u2019 (or similar).",
-        defaultUserMessage: "",
-        hint: "Use a prompt like: \u2018Write a haiku about the following topic: <topic>Pigs</topic>\u2019. The grader checks for both \u2018haiku\u2019 in the prompt and \u2018pig\u2019 in the response.",
-        validation: {
-          type: "regex",
-          pattern: "pig",
-          flags: "i",
-        },
-      },
-      {
-        type: "exercise",
-        title: "Exercise 4.2 \u2014 Dog Question with XML Tags",
-        description:
-          "Fix this messy prompt by adding XML tags so AI correctly answers the question about whether dogs can be brown. Don\u2019t fix the typos \u2014 just add XML tags around the question.",
-        defaultUserMessage: `Hia its me i have a q about dogs jkaerjv ar cn brown? jklmvca tx it help me muhch much atx fst fst answer short short tx`,
-        hint: "Wrap the actual question in XML tags like <question>ar cn brown?</question> to separate it from the garbled text. AI should be able to understand the question is asking \u2018are [dogs] brown?\u2019",
-        validation: {
-          type: "regex",
-          pattern: "brown|yes",
-          flags: "i",
-        },
-      },
-    ],
-  },
-
-  // ============================================================
-  // CHAPTER 5: Formatting Output & Speaking for AI
-  // ============================================================
-  {
-    id: 5,
     title: "Formatting Output & Speaking for AI",
     part: "intermediate",
     partLabel: "Part 2 \u2014 Intermediate",
@@ -480,7 +375,7 @@ In the API, you can set **stop_sequences** to make AI stop generating when it hi
       },
       {
         type: "exercise",
-        title: "Exercise 5.1 \u2014 Structured Movie Review",
+        title: "Exercise 4.1 \u2014 Structured Movie Review",
         description:
           "Write a prompt that gets AI to output a movie review with three sections wrapped in XML tags: <rating>, <summary>, and <recommendation>.",
         defaultUserMessage: "",
@@ -492,7 +387,7 @@ In the API, you can set **stop_sequences** to make AI stop generating when it hi
       },
       {
         type: "exercise",
-        title: "Exercise 5.2 \u2014 Positive Only",
+        title: "Exercise 4.2 \u2014 Positive Only",
         description:
           "Write a prompt asking AI to say something nice about the following animal: cats. AI\u2019s response should contain only positive sentiments \u2014 no caveats, downsides, or negatives.",
         defaultUserMessage: "",
@@ -507,10 +402,10 @@ In the API, you can set **stop_sequences** to make AI stop generating when it hi
   },
 
   // ============================================================
-  // CHAPTER 6: Thinking Step by Step
+  // CHAPTER 5: Thinking Step by Step
   // ============================================================
   {
-    id: 6,
+    id: 5,
     title: "Thinking Step by Step",
     part: "intermediate",
     partLabel: "Part 2 \u2014 Intermediate",
@@ -585,7 +480,7 @@ This makes it easy to extract just the answer programmatically while still getti
       },
       {
         type: "exercise",
-        title: "Exercise 6.1 \u2014 Classifying with Reasoning",
+        title: "Exercise 5.1 \u2014 Classifying with Reasoning",
         description:
           "Write a prompt that classifies the following email as either 'billing', 'technical', or 'general'. Include instructions for AI to think step by step before classifying. The email: 'My account was charged twice for the same order. Can you help me get a refund for the duplicate charge?'",
         defaultUserMessage: "",
@@ -598,7 +493,7 @@ This makes it easy to extract just the answer programmatically while still getti
       },
       {
         type: "exercise",
-        title: "Exercise 6.2 \u2014 Word Problem",
+        title: "Exercise 5.2 \u2014 Word Problem",
         description:
           "Get AI to correctly solve this word problem by asking it to think step by step: 'A store sells apples in bags of 6 and oranges in bags of 4. If Maria buys 3 bags of apples and 2 bags of oranges, how many total pieces of fruit does she have?' The answer is 26.",
         defaultUserMessage: "",
@@ -612,10 +507,10 @@ This makes it easy to extract just the answer programmatically while still getti
   },
 
   // ============================================================
-  // CHAPTER 7: Using Examples (Few-Shot Prompting)
+  // CHAPTER 6: Using Examples (Few-Shot Prompting)
   // ============================================================
   {
-    id: 7,
+    id: 6,
     title: "Using Examples",
     part: "intermediate",
     partLabel: "Part 2 \u2014 Intermediate",
@@ -694,7 +589,7 @@ Now convert:
       },
       {
         type: "exercise",
-        title: "Exercise 7.1 \u2014 Sentiment with Examples",
+        title: "Exercise 6.1 \u2014 Sentiment with Examples",
         description:
           "Write a prompt with examples that teaches AI to classify text sentiment as POSITIVE, NEGATIVE, or NEUTRAL. Then have it classify: 'The product works as expected, nothing special.' It should be classified as NEUTRAL.",
         defaultUserMessage: "",
@@ -707,7 +602,7 @@ Now convert:
       },
       {
         type: "exercise",
-        title: "Exercise 7.2 \u2014 Email Subject Lines",
+        title: "Exercise 6.2 \u2014 Email Subject Lines",
         description:
           "Use few-shot examples to teach AI to generate concise email subject lines (max 6 words) from email content. Then have it generate a subject for an email about rescheduling a meeting to next Tuesday at 3pm.",
         defaultUserMessage: "",
@@ -722,10 +617,10 @@ Now convert:
   },
 
   // ============================================================
-  // CHAPTER 8: Avoiding Hallucinations
+  // CHAPTER 7: Avoiding Hallucinations
   // ============================================================
   {
-    id: 8,
+    id: 7,
     title: "Avoiding Hallucinations",
     part: "advanced",
     partLabel: "Part 3 \u2014 Advanced",
@@ -793,7 +688,7 @@ The most reliable approach is to **use multiple strategies together**:
 1. Give AI an "out"
 2. Require evidence from source material
 3. Use low temperature
-4. Ask AI to think step by step (from Chapter 6)
+4. Ask AI to think step by step (from Chapter 5)
 
 ---
 
@@ -801,7 +696,7 @@ The most reliable approach is to **use multiple strategies together**:
       },
       {
         type: "exercise",
-        title: "Exercise 8.1 \u2014 Honest Uncertainty",
+        title: "Exercise 7.1 \u2014 Honest Uncertainty",
         description:
           "Write a prompt asking AI about the fictional book 'The Quantum Daffodil Principle' by Dr. Margaret Thornberry. Your prompt should be designed so that AI admits it doesn\u2019t know about this (because it\u2019s fictional) rather than making something up.",
         defaultUserMessage: "",
@@ -814,7 +709,7 @@ The most reliable approach is to **use multiple strategies together**:
       },
       {
         type: "exercise",
-        title: "Exercise 8.2 \u2014 Document-Grounded Answers",
+        title: "Exercise 7.2 \u2014 Document-Grounded Answers",
         description:
           "Write a prompt that asks AI to answer a question based ONLY on the provided text. The text says: 'The Zephyr X1 processor runs at 3.2 GHz and has 8 cores.' Ask what the clock speed of the Zephyr X1 is. AI should answer 3.2 GHz and NOT hallucinate additional specifications.",
         defaultUserMessage: "",
@@ -829,10 +724,10 @@ The most reliable approach is to **use multiple strategies together**:
   },
 
   // ============================================================
-  // CHAPTER 9: Complex Prompts from Scratch
+  // CHAPTER 8: Complex Prompts from Scratch
   // ============================================================
   {
-    id: 9,
+    id: 8,
     title: "Complex Prompts from Scratch",
     part: "advanced",
     partLabel: "Part 3 \u2014 Advanced",
@@ -963,7 +858,7 @@ Remember:
       },
       {
         type: "exercise",
-        title: "Exercise 9.1 \u2014 Customer Support Classifier",
+        title: "Exercise 8.1 \u2014 Customer Support Classifier",
         description:
           "Build a complex prompt that classifies customer support tickets into categories (billing, technical, account, general) and priority levels (high, medium, low). Use role prompting, XML tags for the ticket, step-by-step thinking, and structured output. Classify this ticket: 'I\u2019ve been locked out of my account for 3 days and I\u2019m losing business. This is urgent!'",
         defaultSystemPrompt: "",
@@ -977,7 +872,7 @@ Remember:
       },
       {
         type: "exercise",
-        title: "Exercise 9.2 \u2014 Structured Data Extraction",
+        title: "Exercise 8.2 \u2014 Structured Data Extraction",
         description:
           "Write a prompt that extracts structured information from this business card text: 'Jane Smith, VP of Engineering, TechCorp Inc. Email: jane@techcorp.com, Phone: (555) 123-4567, San Francisco, CA'. Output should be in clean XML tags.",
         defaultUserMessage: "",

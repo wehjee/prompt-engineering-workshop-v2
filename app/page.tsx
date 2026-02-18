@@ -7,8 +7,8 @@ import { chapters } from "@/lib/chapters";
 
 const parts = [
   { key: "beginner" as const, label: "Part 1 — Beginner", range: "Chapters 1–3" },
-  { key: "intermediate" as const, label: "Part 2 — Intermediate", range: "Chapters 4–7" },
-  { key: "advanced" as const, label: "Part 3 — Advanced", range: "Chapters 8–9" },
+  { key: "intermediate" as const, label: "Part 2 — Intermediate", range: "Chapters 4–6" },
+  { key: "advanced" as const, label: "Part 3 — Advanced", range: "Chapters 7–8" },
 ];
 
 export default function Home() {
@@ -59,7 +59,7 @@ export default function Home() {
             <TiltCard
               title="AI Headshot"
               description="Generate a professional AI headshot using vision capabilities and prompt engineering techniques."
-              chapter={10}
+              chapter={9}
               part="advanced"
               href="/headshot"
             />
