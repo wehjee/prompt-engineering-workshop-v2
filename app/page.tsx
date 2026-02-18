@@ -58,7 +58,7 @@ export default function Home() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             <TiltCard
               title="AI Headshot"
-              description="Generate a professional AI headshot using Claude's vision capabilities and prompt engineering techniques."
+              description="Generate a professional AI headshot using vision capabilities and prompt engineering techniques."
               chapter={10}
               part="advanced"
               href="/headshot"

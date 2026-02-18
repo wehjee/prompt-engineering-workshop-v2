@@ -48,7 +48,7 @@ export function CTASection() {
             </h2>
 
             <p className="text-text-secondary text-lg md:text-xl max-w-2xl mb-12 leading-relaxed">
-              Master the art of prompting Claude — from basic structure to advanced techniques.
+              Master the art of prompting AI — from basic structure to advanced techniques.
               Hands-on exercises with live API calls, powered by your own key.
             </p>
             <button

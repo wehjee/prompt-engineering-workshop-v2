@@ -138,7 +138,7 @@ export function Playground({
             disabled={isLoading || !userMessage.trim()}
             className="px-4 py-2 text-sm font-medium rounded-lg bg-accent text-white hover:bg-accent-hover disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
           >
-            {isLoading ? "Sending..." : "Send to Claude"}
+            {isLoading ? "Sending..." : "Send to AI"}
           </button>
           <span className="text-xs text-text-tertiary">
             {typeof navigator !== "undefined" && navigator.platform?.includes("Mac") ? "\u2318" : "Ctrl"}+Enter
@@ -156,7 +156,7 @@ export function Playground({
         {(response || isLoading) && (
           <div className="mt-4">
             <label className="text-xs font-medium text-text-secondary mb-1 block">
-              Claude&apos;s response
+              AI&apos;s response
             </label>
             <div className="px-4 py-3 rounded-lg border border-border bg-surface min-h-[60px]">
               {isLoading ? (

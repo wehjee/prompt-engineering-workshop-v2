@@ -743,12 +743,12 @@
       <div class="chapter-badge">WORLD 1 — BEGINNER</div>
       <h1 class="chapter-title">Basic Prompt<br>Structure</h1>
       <p class="chapter-desc">
-        Learn the fundamentals of Claude's Messages API, including message formatting, system prompts, and the temperature parameter.
+        Learn the fundamentals of AI's Messages API, including message formatting, system prompts, and the temperature parameter.
       </p>
 
       <h2>// LESSON</h2>
       <p>
-        Claude works through the <strong>Messages API</strong>. When calling Claude, there are several required and optional parameters you can set to control the output.
+        AI works through the <strong>Messages API</strong>. When calling AI, there are several required and optional parameters you can set to control the output.
       </p>
       <p>The API requires three key parameters:</p>
       <ul>
@@ -766,24 +766,24 @@
         <pre><code><span class="kw">const</span> response = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">"/api/chat"</span>, {
   method: <span class="str">"POST"</span>,
   body: <span class="fn">JSON.stringify</span>({
-    messages: [{ role: <span class="str">"user"</span>, content: <span class="str">"Hi, Claude!"</span> }],
+    messages: [{ role: <span class="str">"user"</span>, content: <span class="str">"Hi, AI!"</span> }],
   }),
 });</code></pre>
       </div>
 
       <p>
-        You can also provide a <strong>system prompt</strong> to give Claude context. The <strong>temperature</strong> parameter controls randomness — we use <code>0</code> for consistent results.
+        You can also provide a <strong>system prompt</strong> to give AI context. The <strong>temperature</strong> parameter controls randomness — we use <code>0</code> for consistent results.
       </p>
 
       <!-- Playground -->
       <div class="playground">
         <div class="playground-header">
           <h3>▶ TRY IT YOURSELF</h3>
-          <p>Send a simple message to Claude. Try changing it and see what happens.</p>
+          <p>Send a simple message to AI. Try changing it and see what happens.</p>
         </div>
         <div class="playground-body">
           <span class="field-label">USER MESSAGE</span>
-          <textarea>Hi, Claude!</textarea>
+          <textarea>Hi, AI!</textarea>
           <div class="playground-actions">
             <button class="btn btn-send">SEND TO CLAUDE</button>
             <span class="shortcut-hint">⌘+Enter</span>
@@ -804,7 +804,7 @@
         <div class="exercise-header">
           <div class="exercise-badge">CHALLENGE</div>
           <h3>EXERCISE 1.1 — COUNTING TO THREE</h3>
-          <p>Write a prompt that gets Claude to output exactly the numbers 1, 2, and 3 — in that order.</p>
+          <p>Write a prompt that gets AI to output exactly the numbers 1, 2, and 3 — in that order.</p>
         </div>
         <div class="exercise-body">
           <span class="field-label">YOUR PROMPT</span>
@@ -815,7 +815,7 @@
           </div>
           <div class="hint-box">
             <div class="hint-label">HINT</div>
-            <p>The grader checks that 1, 2, and 3 appear in order. You can simply ask Claude to count or list the numbers.</p>
+            <p>The grader checks that 1, 2, and 3 appear in order. You can simply ask AI to count or list the numbers.</p>
           </div>
           <div class="result-pass">
             ★ PASSED! +100 XP ★

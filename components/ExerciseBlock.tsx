@@ -193,7 +193,7 @@ export function ExerciseBlock({
         {(response || isLoading) && (
           <div>
             <label className="text-xs font-medium text-text-secondary mb-1 block">
-              Claude&apos;s response
+              AI&apos;s response
             </label>
             <div className={clsx(
               "px-4 py-3 rounded-lg border min-h-[60px]",

@@ -12,7 +12,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "Prompt Engineering Tutorial",
-  description: "Learn prompt engineering techniques for Claude, from beginner to advanced.",
+  description: "Learn prompt engineering techniques for AI, from beginner to advanced.",
 };
 
 export default function RootLayout({
